@@ -1,4 +1,5 @@
 # Python Calculator
+![Calculator](screenshots/calculator.png)
 
 A calculator with a graphical window, written in Python with `tkinter`.
 My first Python project.

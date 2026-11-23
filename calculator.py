@@ -270,3 +270,11 @@ class Calculator:
         self.display = self.display[:-1]
         if self.display in ("", "-"):
             self.display = "0"
+
+    def use_history_entry(self, entry):
+        """Put the result of a history entry (like "2 + 3 = 5") on the display."""
+        if self.has_error:
+            self.clear()
+        self.display = entry.split(" = ")[-1]
+        # With no operator waiting, the next digit starts a new number.
+        self.start_new_number = self.operator is None

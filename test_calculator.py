@@ -297,3 +297,30 @@ def test_history_has_a_size_limit():
     for _ in range(Calculator.MAX_HISTORY + 10):
         press(calculator, "1 + 1 =")
     assert len(calculator.history) == Calculator.MAX_HISTORY
+
+
+def test_use_history_entry():
+    calculator = press(Calculator(), "2 + 3 = C")
+    calculator.use_history_entry(calculator.history[-1])
+    assert calculator.display == "5"
+    press(calculator, "× 4 =")
+    assert calculator.display == "20"
+
+
+def test_use_history_entry_with_negative_result():
+    calculator = press(Calculator(), "5 neg + 2 = C")
+    calculator.use_history_entry(calculator.history[-1])
+    assert calculator.display == "-3"
+
+def test_use_history_entry():
+    calculator = press(Calculator(), "2 + 3 = C")
+    calculator.use_history_entry(calculator.history[-1])
+    assert calculator.display == "5"
+    press(calculator, "× 4 =")
+    assert calculator.display == "20"
+
+
+def test_use_history_entry_with_negative_result():
+    calculator = press(Calculator(), "5 neg + 2 = C")
+    calculator.use_history_entry(calculator.history[-1])
+    assert calculator.display == "-3"

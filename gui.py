@@ -13,15 +13,16 @@ from calculator import OPERATIONS, OPERATOR_ALIASES, Calculator
 FONT = "Segoe UI"
 
 # Colors
-BACKGROUND = "#1c1c1e"
-TEXT = "#ffffff"
-MUTED_TEXT = "#a1a1a6"
+BACKGROUND = "#0f172a"     # Deep slate base
+SURFACE = "#1e293b"        # Elevated panels (History box)
+BORDER = "#000000"         # Subtle 1px dividers
+TEXT = "#f8fafc"           # Crisp off-white (easier on the eyes than pure #ffffff)
+MUTED_TEXT = "#94a3b8"     # Secondary expression & header text
 
-# Each button style has a normal color, a hover color and a text color.
 STYLES = {
-    "number": {"bg": "#3a3a3c", "hover": "#4a4a4d", "fg": "#ffffff"},
-    "function": {"bg": "#636366", "hover": "#757579", "fg": "#ffffff"},
-    "operator": {"bg": "#ff9f0a", "hover": "#ffb340", "fg": "#ffffff"},
+    "number": {"bg": "#020F25", "hover": "#021A3C", "fg": "#f8fafc"},
+    "function": {"bg": "#010815", "hover": "#012051", "fg": "#94a3b8"},
+    "operator": {"bg": "#010248", "hover": "#818cf8", "fg": "#ffffff"},
 }
 
 # (text, row, column, column span, style)
@@ -139,8 +140,9 @@ class CalculatorApp:
             selectbackground="#3a3a3c", selectforeground=TEXT,
         )
         self.history_list.pack(fill="both", expand=True, pady=6)
+        self.history_list.bind("<Double-Button-1>", self._on_history_double_click)
 
-        tk.Button(
+        tk.Button(    
             parent, text="Clear history", command=self._clear_history,
             bg=STYLES["function"]["bg"], fg=TEXT, relief="flat", bd=0,
             activebackground=STYLES["function"]["hover"], activeforeground=TEXT,
@@ -166,6 +168,14 @@ class CalculatorApp:
             self._on_button(SPECIAL_KEY_MAP[event.keysym])
         elif event.char in KEY_MAP:
             self._on_button(KEY_MAP[event.char])
+
+    def _on_history_double_click(self, event):
+        selection = self.history_list.curselection()
+        if not selection:
+            return
+        entry = self.history_list.get(selection[0])
+        self.calculator.use_history_entry(entry)
+        self._refresh()
 
     def _clear_history(self):
         self.calculator.clear_history()
